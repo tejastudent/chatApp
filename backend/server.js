@@ -5,6 +5,7 @@ const userRoutes=require('./routes/userRoutes')
 const chatRoutes = require("./routes/chatRoutes");
 const cors = require("cors");
 const messageRoutes=require('./routes/messageRoutes')
+const path = require('path')
 
 const app=express()
 app.use(cors());
@@ -15,6 +16,9 @@ app.use(express.json())
 app.use('/api/user',userRoutes)
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const server=app.listen(5000,()=>{console.log(`server running on port ${5000}`)})
 const io = require("socket.io")(server, {

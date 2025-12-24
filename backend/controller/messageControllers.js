@@ -24,16 +24,29 @@ const allMessages = asyncHandler(async (req, res) => {
 const sendMessage = asyncHandler(async (req, res) => {
   const { content, chatId } = req.body;
 
-  if (!content || !chatId) {
+  if ((!content || content.trim() === "") && !req.file) {
     console.log("Invalid data passed into request");
+    return res.sendStatus(400);
+  }
+
+  if (!chatId) {
+    console.log("Chat ID is required");
     return res.sendStatus(400);
   }
 
   var newMessage = {
     sender: req.user._id,
-    content: content,
+    content: content || "",
     chat: chatId,
   };
+
+  // Add file information if file was uploaded
+  if (req.file) {
+    newMessage.fileUrl = `/uploads/${req.file.filename}`;
+    newMessage.fileName = req.file.originalname;
+    newMessage.fileType = req.file.mimetype;
+    newMessage.fileSize = req.file.size;
+  }
 
   try {
     var message = await Message.create(newMessage);

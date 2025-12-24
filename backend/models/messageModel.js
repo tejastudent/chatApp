@@ -14,6 +14,22 @@ const messageModel=mongoose.Schema(
             type:mongoose.Schema.Types.ObjectId,
                 ref:"Chat"
         },
+        fileUrl:{
+            type:String,
+            default:""
+        },
+        fileName:{
+            type:String,
+            default:""
+        },
+        fileType:{
+            type:String,
+            default:""
+        },
+        fileSize:{
+            type:Number,
+            default:0
+        }
          
         
        
